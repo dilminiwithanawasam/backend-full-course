@@ -1,1 +1,0 @@
-//stores global constants used across the application

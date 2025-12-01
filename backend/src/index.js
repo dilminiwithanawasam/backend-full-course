@@ -21,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use("/api/users", userRouter);
+
 app.get("/", (req, res) => {
     return res.send("Hi Everyone.");
 });
@@ -37,8 +39,12 @@ app.get('/check-db', async (req, res) => {
 
 // * routes file
 import userRouter from "./routes/userRoutes.js"
+import roleRouter from "./routes/roleRoutes.js"
+import permissionRouter from "./routes/permissionRoutes.js"
 
 
 app.use("/api/user", userRouter);
+app.use("/api/role", roleRouter);
+app.use("/api/permission", permissionRouter);
 
 app.listen(PORT, () => console.log(`Server is running on PORT ${PORT}`));

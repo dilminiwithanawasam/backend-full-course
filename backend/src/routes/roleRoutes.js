@@ -1,10 +1,10 @@
 import express from "express";
-import { createUser } from "../controllers/user.controller.js";
+import { createRole } from "../controllers/rolecontroller.js";
 import { isAdmin } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 // Only admin can create users
-router.post("/", isAdmin, createUser);
+router.post("/", isAdmin, createRole);
 
 export default router;

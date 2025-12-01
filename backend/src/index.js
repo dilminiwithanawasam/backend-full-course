@@ -6,15 +6,11 @@ import prisma from "./DB/db.config.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-async function main() {
-  try {
-    // Attempt to connect to the database
-    await prisma.$connect();
-    console.log('✅ Database connected successfully');
-  }catch (error) {
-    console.log( "database not connected");
-  }
-}
+import userRouter from "./routes/userRoutes.js"
+import roleRouter from "./routes/roleRoutes.js"
+import permissionRouter from "./routes/permissionRoutes.js"
+import authRoutes from "./routes/auth.routes.js";
+
 
 // * Middleware
 app.use(express.json());
@@ -37,12 +33,9 @@ app.get('/check-db', async (req, res) => {
   }
 });
 
-// * routes file
-import userRouter from "./routes/userRoutes.js"
-import roleRouter from "./routes/roleRoutes.js"
-import permissionRouter from "./routes/permissionRoutes.js"
 
 
+app.use("/api/auth", authRoutes);
 app.use("/api/user", userRouter);
 app.use("/api/role", roleRouter);
 app.use("/api/permission", permissionRouter);

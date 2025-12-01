@@ -4,13 +4,10 @@ import { hashPassword } from "../utils/hash.util.js";
 const prisma = new PrismaClient();
 
 export const createUserService = async (data) => {
-  const { first_name, email, password, roleId } = data;
+  const { first_name, email, password, roleName } = data;
 
-  // Check duplicate user
-  const existing = await prisma.user.findUnique({
-    where: { email }
-  });
-
+  // Check for duplicate user
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     throw new Error("User already exists with this email");
   }
@@ -18,13 +15,15 @@ export const createUserService = async (data) => {
   // Hash password
   const hashed = await hashPassword(password);
 
-  // Create user
+  // Create user and assign role by name
   const user = await prisma.user.create({
     data: {
       first_name,
       email,
       password: hashed,
-      roleId
+      role: {
+        connect: { name: roleName }  // <-- Connect role by name
+      }
     }
   });
 

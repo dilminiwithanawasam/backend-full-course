@@ -1,4 +1,3 @@
-// src/controllers/auth.controller.js
 import { loginService } from "../services/auth.service.js";
 
 export const loginController = async (req, res) => {
@@ -11,9 +10,12 @@ export const loginController = async (req, res) => {
       return res.status(400).json({ message: result.message });
     }
 
+    const roleName = result.user.role?.name;
+
     return res.status(200).json({
       message: result.message,
-      token: result.token
+      token: result.token,
+      role: roleName // send role name to frontend
     });
 
   } catch (error) {

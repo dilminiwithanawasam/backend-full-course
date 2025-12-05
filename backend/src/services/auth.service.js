@@ -4,10 +4,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const loginService = async (email, password) => {
-  // Find user
+  // Find user with role
   const user = await prisma.user.findUnique({
     where: { email },
-    include: { role: true }
+    include: { role: true } // include role to get role.name
   });
 
   if (!user) {
@@ -20,7 +20,7 @@ export const loginService = async (email, password) => {
     return { success: false, message: "Invalid credentials" };
   }
 
-  // Generate token
+  // Generate JWT token
   const token = jwt.sign(
     {
       id: user.id,
@@ -31,9 +31,11 @@ export const loginService = async (email, password) => {
     { expiresIn: "1d" }
   );
 
+  // ✅ Return user object along with token
   return {
     success: true,
     message: "Login successful",
-    token
+    token,
+    user // <-- include full user object
   };
 };
